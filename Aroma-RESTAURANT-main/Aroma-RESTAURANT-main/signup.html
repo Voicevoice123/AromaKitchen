@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Sign Up | Aroma Kitchen</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    body {
+      font-family: Poppins, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background: #f8f8f8;
+    }
+    form {
+      background: white;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+      position: relative;
+    }
+    .input-group {
+      position: relative;
+      width: 250px;
+    }
+    input {
+      display: block;
+      width: 100%;
+      margin: 10px 0;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    .toggle-password {
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      cursor: pointer;
+      font-size: 14px;
+      color: #555;
+    }
+    button {
+      background: teal;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-top: 5px;
+    }
+    a {
+      color: teal;
+      text-decoration: none;
+    }
+    #passwordStrength {
+      font-size: 13px;
+      margin-top: -5px;
+      margin-bottom: 5px;
+      font-weight: 500;
+    }
+    #passwordMatchMsg {
+      font-size: 14px;
+      color: red;
+      margin-top: -8px;
+    }
+  </style>
+</head>
+<body>
+  <form id="signupForm">
+    <h2>Create an Account</h2>
+
+    <input type="text" id="signupName" placeholder="Full Name" required>
+    <input type="email" id="signupEmail" placeholder="Email" required>
+
+    <!-- 🔐 Password with show/hide + strength -->
+    <div class="input-group">
+      <input type="password" id="signupPassword" placeholder="Password" required>
+      <span class="toggle-password" id="togglePassword1">👁️</span>
+    </div>
+    <p id="passwordStrength"></p>
+
+    <!-- 🔁 Confirm password with toggle -->
+    <div class="input-group">
+      <input type="password" id="confirmPassword" placeholder="Confirm Password" required>
+      <span class="toggle-password" id="togglePassword2">👁️</span>
+    </div>
+    <p id="passwordMatchMsg"></p>
+
+    <button type="submit">Sign Up</button>
+
+    <div class="google-signin"></div>
+    <div id="g_id_onload"
+       data-client_id="YOUR_GOOGLE_CLIENT_ID"
+       data-context="signup"
+       data-ux_mode="popup"
+       data-callback="handleGoogleSignIn"
+       data-auto_select="false"
+       data-itp_support="true">
+    </div>
+
+    <div class="g_id_signin"
+       data-type="standard"
+       data-shape="rectangular"
+       data-theme="outline"
+       data-text="signin_with"
+       data-size="large"
+       data-logo_alignment="left">
+    </div>
+
+    <p>Already have an account? <a href="signin.html">Log In</a></p>
+  </form>
+
+  <script>
+    // 🧩 Hash utility
+    function hash(str) {
+      let h = 0;
+      for (let i = 0; i < str.length; i++) h = (Math.imul(31, h) + str.charCodeAt(i)) | 0;
+      return "h_" + Math.abs(h);
+    }
+
+    function getUsers() {
+      return JSON.parse(localStorage.getItem("aroma_users")) || [];
+    }
+
+    function saveUser(user) {
+      const users = getUsers();
+      users.push(user);
+      localStorage.setItem("aroma_users", JSON.stringify(users));
+    }
+
+    // Password and confirm references
+    const pwInput = document.getElementById("signupPassword");
+    const confirmInput = document.getElementById("confirmPassword");
+    const pwStrength = document.getElementById("passwordStrength");
+    const matchMsg = document.getElementById("passwordMatchMsg");
+
+    // ✅ Show/Hide password toggles
+    document.getElementById("togglePassword1").addEventListener("click", function() {
+      const type = pwInput.type === "password" ? "text" : "password";
+      pwInput.type = type;
+      this.textContent = type === "password" ? "👁️" : "🙈";
+    });
+
+    document.getElementById("togglePassword2").addEventListener("click", function() {
+      const type = confirmInput.type === "password" ? "text" : "password";
+      confirmInput.type = type;
+      this.textContent = type === "password" ? "👁️" : "🙈";
+    });
+
+    // ✅ Password Strength
+    pwInput.addEventListener("input", () => {
+      const val = pwInput.value;
+      let strength = "";
+      let color = "red";
+
+      const strong = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/;
+      const medium = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{6,}$/;
+
+      if (strong.test(val)) {
+        strength = "Strong ✅";
+        color = "green";
+      } else if (medium.test(val)) {
+        strength = "Medium ⚠️";
+        color = "orange";
+      } else if (val.length > 0) {
+        strength = "Weak ❌";
+        color = "red";
+      } else {
+        strength = "";
+      }
+
+      pwStrength.textContent = strength;
+      pwStrength.style.color = color;
+    });
+
+    // ✅ Confirm password check
+    confirmInput.addEventListener("input", () => {
+      if (confirmInput.value && confirmInput.value !== pwInput.value) {
+        matchMsg.textContent = "Passwords do not match ❌";
+      } else {
+        matchMsg.textContent = "";
+      }
+    });
+
+    // ✅ Form submit handler
+    document.getElementById("signupForm").addEventListener("submit", (e) => {
+      e.preventDefault();
+
+      const name = document.getElementById("signupName").value.trim();
+      const email = document.getElementById("signupEmail").value.trim().toLowerCase();
+      const pw = pwInput.value;
+      const cw = confirmInput.value;
+
+      if (pw !== cw) {
+        alert("Passwords do not match.");
+        return;
+      }
+
+      const users = getUsers();
+      if (users.some(u => u.email === email)) {
+        alert("Email already exists. Please log in instead.");
+        return;
+      }
+
+      const user = { id: Date.now(), name, email, passwordHash: hash(pw) };
+      saveUser(user);
+      localStorage.setItem("aroma_auth", JSON.stringify({ email, name }));
+
+
+      alert("Account created successfully!");
+      window.location.href = "index.html"; 
+
+    });
+  </script>
+
+  <!-- Google Sign-In -->
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+  <script src="google-auth.js"></script>
+</body>
+</html>

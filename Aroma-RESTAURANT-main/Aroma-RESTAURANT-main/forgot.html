@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Forgot Password | Aroma Kitchen</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    body {
+      font-family: Poppins, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background: #f8f8f8;
+    }
+    form {
+      background: white;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+      width: 300px;
+    }
+    h2 {
+      margin-bottom: 15px;
+    }
+    input {
+      display: block;
+      width: 100%;
+      margin: 10px 0;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    button {
+      background: teal;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-top: 10px;
+      width: 100%;
+    }
+    a {
+      color: teal;
+      text-decoration: none;
+    }
+    p {
+      text-align: center;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <form id="resetForm">
+    <h2>Reset Password</h2>
+    <p>Enter your registered email and new password.</p>
+
+    <input type="email" id="resetEmail" placeholder="Your Email" required>
+    <input type="password" id="newPassword" placeholder="New Password" required>
+    <input type="password" id="confirmNewPassword" placeholder="Confirm Password" required>
+
+    <button type="submit">Reset Password</button>
+
+    <p>Remembered your password? <a href="signin.html">Log In</a></p>
+  </form>
+
+  <script>
+    function hash(str) {
+      let h = 0;
+      for (let i = 0; i < str.length; i++) h = (Math.imul(31, h) + str.charCodeAt(i)) | 0;
+      return "h_" + Math.abs(h);
+    }
+
+    function getUsers() {
+      return JSON.parse(localStorage.getItem("aroma_users")) || [];
+    }
+
+    function saveUsers(users) {
+      localStorage.setItem("aroma_users", JSON.stringify(users));
+    }
+
+    document.getElementById("resetForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+
+      const email = document.getElementById("resetEmail").value.trim().toLowerCase();
+      const newPw = document.getElementById("newPassword").value;
+      const confirmPw = document.getElementById("confirmNewPassword").value;
+
+      if (newPw !== confirmPw) {
+        alert("Passwords do not match!");
+        return;
+      }
+
+      let users = getUsers();
+      const userIndex = users.findIndex(u => u.email === email);
+
+      if (userIndex === -1) {
+        alert("No account found with that email.");
+        return;
+      }
+
+      // Update the user's password hash
+      users[userIndex].passwordHash = hash(newPw);
+      saveUsers(users);
+
+    window.location.href = "reset-success.html";
+    });
+  </script>
+</body>
+</html>

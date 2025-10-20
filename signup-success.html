@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Signup Successful | Aroma Kitchen</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    body {
+      font-family: Poppins, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background: #f8f8f8;
+    }
+    .success-box {
+      background: white;
+      padding: 40px;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+      text-align: center;
+      max-width: 400px;
+    }
+    .success-box h2 {
+      color: teal;
+      margin-bottom: 15px;
+    }
+    .success-box p {
+      color: #333;
+      margin-bottom: 20px;
+    }
+    button {
+      background: teal;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #007a7a;
+    }
+    .countdown {
+      margin-top: 15px;
+      color: gray;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+  <div class="success-box">
+    <h2>Account Created Successfully 🎉</h2>
+    <p>Welcome to Aroma Kitchen!<br>Your account has been created.</p>
+    <button onclick="window.location.href='signin.html'">Go to Login</button>
+    <p class="countdown">Redirecting in <span id="count">5</span> seconds...</p>
+  </div>
+
+  <script>
+    let seconds = 5;
+    const countEl = document.getElementById("count");
+
+    const timer = setInterval(() => {
+      seconds--;
+      countEl.textContent = seconds;
+      if (seconds === 0) {
+        clearInterval(timer);
+        window.location.href = "signin.html";
+      }
+    }, 1000);
+  </script>
+</body>
+</html>
