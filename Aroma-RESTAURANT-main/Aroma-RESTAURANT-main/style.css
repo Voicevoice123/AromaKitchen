@@ -838,5 +838,15 @@ color: white!important;
   #navbar ul li a {
     font-size: 18px;
   }
-
+ #logoutBtn {
+    width: 30%;
+    margin: 25px auto;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    padding: 0px!important;
+  }
 }
+
+
+
