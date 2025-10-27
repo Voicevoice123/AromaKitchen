@@ -134,23 +134,39 @@ if (auth && welcomeUser) {
         }
       ]
     },
+   
+
     callback: function(response) {
-      alert('Payment successful! Reference: ' + response.reference);
+  alert('Payment successful! Reference: ' + response.reference);
 
-      // Show confirmation modal
-      document.getElementById('order-modal').style.display = 'flex';
 
-      // Clear cart
-      cart = [];
-      localStorage.setItem('cart', JSON.stringify(cart));
-      renderCart();
+  const order = {
+    name,
+    phone,
+    address: document.getElementById("address").value,
+    items: cart,
+    total: totalAmount,
+    date: new Date().toLocaleString(),
+    status: "Pending"
+  };
 
-      // Reset form
-      document.getElementById("order-form").reset();
-    },
-    onClose: function() {
-      alert('Payment window closed.');
-    }
+  let orders = JSON.parse(localStorage.getItem("aroma_orders")) || [];
+  orders.push(order);
+  localStorage.setItem("aroma_orders", JSON.stringify(orders));
+
+  // Show confirmation modal
+  document.getElementById('order-modal').style.display = 'flex';
+
+  // Clear cart
+  cart = [];
+  localStorage.setItem('cart', JSON.stringify(cart));
+  renderCart();
+
+  // Reset form
+  document.getElementById("order-form").reset();
+}
+
+
   });
 
   handler.openIframe();
@@ -199,6 +215,9 @@ if (auth && welcomeUser) {
             `;
             cartItemsEl.appendChild(itemEl);
         });
+
+
+        
         
         // Add remove item functionality
         document.querySelectorAll('.cart-item-remove').forEach(button => {
@@ -283,3 +302,13 @@ if (whatsappBtn) {
     window.open(whatsappURL, "_blank");
   });
 }
+
+
+// Highlight active nav item
+const navLinks = document.querySelectorAll('.nav-link');
+navLinks.forEach(link => {
+  link.addEventListener('click', () => {
+    navLinks.forEach(l => l.classList.remove('active'));
+    link.classList.add('active');
+  });
+});

@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Aroma Kitchen | Admin Access</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: #f4f7f8;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .auth-container {
+      background: white;
+      width: 350px;
+      border-radius: 12px;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+      padding: 25px;
+      transition: all 0.3s ease;
+    }
+    h2 {
+      text-align: center;
+      color: teal;
+      margin-bottom: 15px;
+    }
+    input {
+      width: 100%;
+      margin: 8px 0;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    button {
+      width: 100%;
+      padding: 10px;
+      background: teal;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: background 0.2s;
+    }
+    button:hover { background: #006d6d; }
+    .switch {
+      text-align: center;
+      margin-top: 12px;
+    }
+    .switch a {
+      color: teal;
+      font-weight: 500;
+      cursor: pointer;
+      text-decoration: none;
+    }
+    .hidden { display: none; }
+  </style>
+</head>
+<body>
+  <div class="auth-container">
+    <!-- Admin Sign Up -->
+    <form id="adminSignupForm">
+      <h2>Admin Sign Up</h2>
+      <input type="text" id="adminName" placeholder="Full Name" required>
+      <input type="email" id="adminEmail" placeholder="Email" required>
+      <input type="password" id="adminPassword" placeholder="Password" required>
+      <input type="password" id="adminConfirm" placeholder="Confirm Password" required>
+      <button type="submit">Create Admin</button>
+      <div class="switch">Already have an account? <a id="goToLogin">Log In</a></div>
+    </form>
+
+    <!-- Admin Login -->
+    <form id="adminLoginForm" class="hidden">
+      <h2>Admin Login</h2>
+      <input type="email" id="loginEmail" placeholder="Email" required>
+      <input type="password" id="loginPassword" placeholder="Password" required>
+      <button type="submit">Login</button>
+      <div class="switch">Don’t have an account? <a id="goToSignup">Create one</a></div>
+    </form>
+  </div>
+
+  <script>
+    // Toggle forms
+    const signupForm = document.getElementById("adminSignupForm");
+    const loginForm = document.getElementById("adminLoginForm");
+    document.getElementById("goToLogin").onclick = () => {
+      signupForm.classList.add("hidden");
+      loginForm.classList.remove("hidden");
+    };
+    document.getElementById("goToSignup").onclick = () => {
+      loginForm.classList.add("hidden");
+      signupForm.classList.remove("hidden");
+    };
+
+    // =============== ADMIN SIGNUP ===============
+    signupForm?.addEventListener("submit", e => {
+      e.preventDefault();
+      const name = document.getElementById("adminName").value.trim();
+      const email = document.getElementById("adminEmail").value.trim().toLowerCase();
+      const pw = document.getElementById("adminPassword").value;
+      const cpw = document.getElementById("adminConfirm").value;
+
+      if (pw !== cpw) {
+        alert("Passwords do not match!");
+        return;
+      }
+
+      const admins = JSON.parse(localStorage.getItem("aroma_admins")) || [];
+      if (admins.some(a => a.email === email)) {
+        alert("Admin already exists. Please log in instead.");
+        return;
+      }
+
+      admins.push({ id: Date.now(), name, email, password: pw, isAdmin: true });
+      localStorage.setItem("aroma_admins", JSON.stringify(admins));
+
+      alert("Admin account created successfully! You can now log in.");
+      signupForm.reset();
+      signupForm.classList.add("hidden");
+      loginForm.classList.remove("hidden");
+    });
+
+    // =============== ADMIN LOGIN ===============
+    loginForm?.addEventListener("submit", e => {
+      e.preventDefault();
+      const email = document.getElementById("loginEmail").value.trim().toLowerCase();
+      const pw = document.getElementById("loginPassword").value;
+
+      const admins = JSON.parse(localStorage.getItem("aroma_admins")) || [];
+      const admin = admins.find(a => a.email === email && a.password === pw);
+
+      if (!admin) {
+        alert("Invalid email or password!");
+        return;
+      }
+
+      localStorage.setItem("aroma_auth", JSON.stringify(admin));
+      alert("Welcome, Admin!");
+      window.location.href = "dashboard.html";
+    });
+  </script>
+</body>
+</html>

@@ -6,15 +6,81 @@
     <title>Aroma Kitchen - Nigerian Cuisine</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://js.paystack.co/v1/inline.js"></script>
+
     <style>
-        #logoutBtn{
-            width: 80px;
-            height: 31px;
-            color: white;
-            background-color: rgb(255, 115, 0);
-            text-align: center;
-            border-radius: 10px;
-        }
+     
+       .nav-icon-text {
+  display: flex;
+  flex-direction: column; /* Stack icon above text */
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+}
+/* Smooth icon hover animation */
+.nav-icon-text {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  transition: transform 0.3s ease;
+}
+
+.nav-icon-text svg {
+  transition: transform 0.3s ease, fill 0.3s ease;
+}
+
+
+
+
+
+.nav-icon-text span {
+  font-size: 14px;
+  color: #000;
+  text-align: center;
+  transition: color 0.3s ease;
+}
+
+/* Hover effects */
+.nav-link:hover .nav-icon-text {
+  transform: translateY(-3px);
+}
+
+.nav-link:hover .nav-icon-text svg {
+  transform: scale(1.2);
+  fill: #ff7300; /* Aroma orange accent */
+}
+
+.nav-link:hover .nav-icon-text span {
+  color: #ff7300;
+}
+/* Active nav state (keeps orange highlight) */
+.nav-link.active .nav-icon-text svg {
+  fill: #ff7300;
+  transform: scale(1.15);
+}
+
+.nav-link.active .nav-icon-text span {
+  color: #ff7300;
+  font-weight: 600;
+}
+
+.nav-icon-text svg {
+  display: block;
+}
+/* .nav-icon-text:hover{
+  color: #e8930b;
+} */
+
+.nav-icon-text span {
+  font-size: 14px;
+  color: #000; /* Change color if needed */
+}
+
+
+
     </style>
 </head>
 <body>
@@ -24,10 +90,49 @@
   <div id="welcome-user" class="welcome-text"></div> <!-- 👈 add this line -->
   <nav id="navbar">
       <ul>
-          <li><a href="#" class="nav-link" data-page="home">Home</a></li>
-          <li><a href="#" class="nav-link" data-page="menu">Menu</a></li>
-          <li><a href="#" class="nav-link" data-page="order">Order</a></li>
-          <li><a href="#" class="nav-link" data-page="contact">Contact</a></li>
+        <li>
+ <ul>
+  <li>
+    <a href="#" class="nav-link" data-page="home">
+      <div class="nav-icon-text">
+        <svg xmlns="http://www.w3.org/2000/svg" height="18px" viewBox="0 -960 960 960" width="18px" fill="#000">
+          <path d="M240-200h120v-240h240v240h120v-360L480-740 240-560v360Zm-80 80v-480l320-240 320 240v480H520v-240h-80v240H160Zm320-350Z"/>
+        </svg>
+        <span>Home</span>
+      </div>
+    </a>
+  </li>
+
+  <li>
+    <a href="#" class="nav-link" data-page="menu">
+      <div class="nav-icon-text">
+        <svg xmlns="http://www.w3.org/2000/svg" height="18px" viewBox="0 -960 960 960" width="18px" fill="#000">
+          <path d="M120-200v-80h720v80H120Zm0-240v-80h720v80H120Zm0-240v-80h720v80H120Z"/>
+        </svg>
+        <span>Menu</span>
+      </div>
+    </a>
+  </li>
+
+  <li>
+    <a href="#" class="nav-link" data-page="contact">
+      <div class="nav-icon-text">
+        <svg xmlns="http://www.w3.org/2000/svg" height="18px" viewBox="0 -960 960 960" width="18px" fill="#000">
+          <path d="M480-480Zm0 400q-83 0-157-31.5T194-194q-54-54-85.5-128T77-480q0-83 31.5-157T194-766q54-54 128-85.5T480-883q83 0 157 31.5T766-766q54 54 85.5 128T883-480q0 83-31.5 157T766-194q-54 54-128 85.5T480-80Zm0-80q66 0 124-25t101-68L480-480 255-253q43 43 101 68t124 25Zm230-133 80-80q20-20 30-46t10-55q0-70-49.5-119.5T680-662q-29 0-55 10t-46 30l-80 80 211 211Z"/>
+        </svg>
+        <span>Contact</span>
+      </div>
+    </a>
+  </li>
+</ul>
+          <li>
+    <a href="#" class="nav-link" data-page="order">
+      <div class="nav-icon-text">
+       <svg xmlns="http://www.w3.org/2000/svg" height="18px" viewBox="0 -960 960 960" width="18px" fill="#000"><path d="M280-80q-33 0-56.5-23.5T200-160q0-33 23.5-56.5T280-240q33 0 56.5 23.5T360-160q0 33-23.5 56.5T280-80Zm400 0q-33 0-56.5-23.5T600-160q0-33 23.5-56.5T680-240q33 0 56.5 23.5T760-160q0 33-23.5 56.5T680-80ZM246-720l96 200h280l110-200H246Zm-38-80h590q23 0 35 20.5t1 41.5L692-482q-11 20-29.5 31T622-440H324l-44 80h480v80H280q-45 0-68-39.5t-2-78.5l54-98-144-304H40v-80h130l38 80Zm134 280h280-280Z"/></svg>
+        <span>Cart</span>
+      </div>
+    </a>
+  </li>
           <li><a href="signup.html" id="signupLink">Sign up</a></li>
           <li><a href="signin.html" id="loginLink">Log in</a></li>
           <li><a href="#" id="logoutBtn" style="display:none;">Log out</a></li>
@@ -40,42 +145,51 @@
 
 
     <!-- Home Page -->
-    <div id="home-page" class="page active">
-        <!-- Hero Section -->
-        <section class="hero">
-            <div class="hero-content">
-                <h1>Authentic Nigerian Cuisine</h1>
-                <p>Experience the rich flavors of Nigeria with our carefully prepared dishes made from the freshest ingredients.</p>
-                <a href="#" class="btn nav-link" data-page="menu">Order Now</a>
-            </div>
-        </section>
+    <div id="home-page" class="page active" data-aos="fade-up">
+    <!-- Hero Section -->
+    <section class="hero" data-aos="zoom-in" data-aos-duration="1000">
+        <div class="hero-content" data-aos="fade-up" data-aos-delay="200">
+            <h1 data-aos="fade-down" data-aos-delay="300">Authentic Nigerian Cuisine</h1>
+            <p data-aos="fade-up" data-aos-delay="500">
+                Experience the rich flavors of Nigeria with our carefully prepared dishes made from the freshest ingredients.
+            </p>
+            <a href="#" class="btn nav-link" data-page="menu" data-aos="zoom-in-up" data-aos-delay="700">Order Now</a>
+        </div>
+    </section>
 
-        <!-- About Section -->
-        <section class="about">
-            <div class="container">
-                <h2>Welcome to Aroma Kitchen</h2>
-                <div class="about-content">
-                    <div class="about-text">
-                        <p>At Aroma Kitchen, we bring the authentic taste of Nigerian cuisine to your table. Our chefs use traditional recipes passed down through generations to create dishes that are both flavorful and nutritious.</p>
-                        <p>Located in the heart of Ibadan at Aroma Junction, Bodija. We've been serving the community since 2010 with our signature dishes that keep customers coming back for more.</p>
-                    </div>
-                    <div class="about-image">
-                        <img src="https://images.unsplash.com/photo-1544025162-d76694265947?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Chef preparing Nigerian food">
-                    </div>
+    <!-- About Section -->
+    <section class="about" data-aos="fade-right" data-aos-duration="1000">
+        <div class="container">
+            <h2 data-aos="zoom-in" data-aos-delay="200">Welcome to Aroma Kitchen</h2>
+            <div class="about-content">
+                <div class="about-text" data-aos="fade-right" data-aos-delay="300">
+                    <p>
+                        At Aroma Kitchen, we bring the authentic taste of Nigerian cuisine to your table. Our chefs use traditional recipes passed down through generations to create dishes that are both flavorful and nutritious.
+                    </p>
+                    <p data-aos="fade-right" data-aos-delay="400">
+                        Located in the heart of Ibadan at Aroma Junction, Bodija. We've been serving the community since 2010 with our signature dishes that keep customers coming back for more.
+                    </p>
+                </div>
+                <div class="about-image" data-aos="fade-left" data-aos-delay="500">
+                    <img src="https://images.unsplash.com/photo-1544025162-d76694265947?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Chef preparing Nigerian food">
                 </div>
             </div>
-        </section>
+        </div>
+    </section>
 
-        <!-- Delivery Section -->
-        <section class="delivery">
-            <div class="container">
-                <h3>Delivery Service</h3>
-                <p>We offer delivery services to all areas within Ibadan. Place your order online and enjoy our delicious meals in the comfort of your home or office.</p>
-                <p>Delivery hours: Monday - Saturday, 10:00 AM - 8:00 PM</p>
-                <a href="#" class="btn nav-link" data-page="menu">Place Your Order</a>
-            </div>
-        </section>
-    </div>
+    <!-- Delivery Section -->
+    <section class="delivery" data-aos="fade-up" data-aos-duration="1000">
+        <div class="container">
+            <h3 data-aos="zoom-in" data-aos-delay="200">Delivery Service</h3>
+            <p data-aos="fade-up" data-aos-delay="300">
+                We offer delivery services to all areas within Ibadan. Place your order online and enjoy our delicious meals in the comfort of your home or office.
+            </p>
+            <p data-aos="fade-up" data-aos-delay="400">Delivery hours: Monday - Saturday, 10:00 AM - 8:00 PM</p>
+            <a href="#" class="btn nav-link" data-page="menu" data-aos="flip-up" data-aos-delay="500">Place Your Order</a>
+        </div>
+    </section>
+</div>
+
 
     <!-- Menu Page -->
     <div id="menu-page" class="page">
@@ -275,7 +389,7 @@
         <section class="order-container">
             <div class="container">
                 <div class="cart">
-                    <h2>Your Order</h2>
+                    <h2>Your Cart</h2>
                     <div class="cart-items" id="cart-items">
                         <!-- Cart items will be added here dynamically -->
                         <p class="empty-cart">Your cart is empty. Add items from the menu.</p>
@@ -333,11 +447,11 @@
                         </div>
                         <div class="contact-item">
                             <i class="fas fa-phone"></i>
-                            <p>+234 812 345 6789</p>
+                            <p>+234 9067377220</p>
                         </div>
                         <div class="contact-item">
                             <i class="fab fa-whatsapp"></i>
-                            <p>+234 812 345 6789</p>
+                            <p>+234 9067377220</p>
                         </div>
                         <div class="contact-item">
                             <i class="fas fa-envelope"></i>
@@ -401,8 +515,61 @@
   <i class="fab fa-whatsapp"></i>
 </a>
 
+
+<!-- Paystack inline SDK (must come BEFORE script.js) -->
+<script src="https://js.paystack.co/v1/inline.js"></script>
+
+<!-- Google Identity (signup / signin pages need this) -->
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+
+<!-- Your main app script -->
+<script src="./script.js"></script>
+
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script>
+  AOS.init({
+    duration: 10000,
+    once: true
+  });
+
+// 🕒 Auto logout after 10 minutes of inactivity (you can adjust the time)
+const INACTIVITY_LIMIT = 100 * 60 * 1000; // 10 minutes = 600,000 ms
+let inactivityTimer;
+
+// ✅ Reset timer when user interacts
+function resetInactivityTimer() {
+  clearTimeout(inactivityTimer);
+  inactivityTimer = setTimeout(logoutUser, INACTIVITY_LIMIT);
+}
+
+// 🚪 Function to log out the user
+function logoutUser() {
+  // Remove authentication from localStorage
+  localStorage.removeItem("aroma_auth");
+
+  // Optional: Show a message
+  alert("You have been logged out due to inactivity.");
+
+  // Redirect to the sign-in page
+  window.location.href = "signin.html";
+}
+
+// 🔁 Track user activity
+["mousemove", "keydown", "click", "scroll", "touchstart"].forEach(event => {
+  window.addEventListener(event, resetInactivityTimer);
+});
+
+// ⏳ Start the timer on page load
+resetInactivityTimer();
+
+
+
+</script>
+
 </body>
 </html>
 
+
+<script src="https://accounts.google.com/gsi/client" async defer></script>
 <script src="https://js.paystack.co/v1/inline.js"></script>
-<script src="./script.js"></script>
+<script src="script.js"></script>

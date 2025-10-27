@@ -1,192 +1,70 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Log In | Aroma Kitchen</title>
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <title>Sign In | Aroma Kitchen</title>
+  <link rel="stylesheet" href="style.css" />
   <style>
-    body {
-      font-family: Poppins, sans-serif;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      background: #f8f8f8;
-    }
-    form {
-      background: white;
-      padding: 30px;
-      border-radius: 10px;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-      position: relative;
-      width: 280px;
-    }
-    h2 {
-      margin-bottom: 15px;
-    }
-    .input-group {
-      position: relative;
-      width: 100%;
-    }
-    input {
-      display: block;
-      width: 100%;
-      margin: 10px 0;
-      padding: 10px;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-    }
-    .toggle-password {
-      position: absolute;
-      right: 10px;
-      top: 50%;
-      transform: translateY(-50%);
-      cursor: pointer;
-      font-size: 14px;
-      color: #555;
-    }
-    button {
-      background: teal;
-      color: white;
-      border: none;
-      padding: 10px 15px;
-      border-radius: 5px;
-      cursor: pointer;
-      margin-top: 5px;
-      width: 100%;
-    }
-    .options {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 12px;
-      margin-top: 5px;
-    }
-    .options label {
-      display: flex;
-      align-items: center;
-      gap: 5px;
-    }
-    .options a {
-      color: teal;
-      text-decoration: none;
-    }
-    p {
-      text-align: center;
-      margin-top: 10px;
-    }
-    a {
-      color: teal;
-      text-decoration: none;
-    }
-      #signinForm h2{
-      font-size: 20px;
-      text-align: center;
-    }
+    body{font-family:Poppins,sans-serif;display:flex;justify-content:center;align-items:center;height:100vh;background:#f8f8f8;}
+    form{background:white;padding:30px;border-radius:10px;box-shadow:0 2px 5px rgba(0,0,0,0.2);}
+    input{display:block;width:250px;margin:10px 0;padding:10px;border:1px solid #ccc;border-radius:5px;}
+    button{background:teal;color:white;border:none;padding:10px 15px;border-radius:5px;cursor:pointer;}
+    a{color:teal;text-decoration:none;}
   </style>
 </head>
 <body>
   <form id="signinForm">
-    <h2>Welcome to AromaKitchen 👋</h2>
+    <h2>Welcome Back!</h2>
+    <input type="email" id="signinEmail" placeholder="Email" required>
+    <input type="password" id="signinPassword" placeholder="Password" required>
+    <button type="submit">Sign In</button>
 
-    <input type="email" id="loginEmail" placeholder="Email" required>
-
-    <div class="input-group">
-      <input type="password" id="loginPassword" placeholder="Password" required>
-      <span class="toggle-password" id="toggleLoginPassword">👁️</span>
-    </div>
-
-    <div class="options">
-      <label><input type="checkbox" id="rememberMe"> Remember me</label>
-      <a href="forgot.html">Forgot Password?</a>
-
-    </div>
-
-    <button type="submit">Log In</button>
-
-    <div style="text-align:center;margin:10px 0;">or</div>
-
-    <!-- Google Sign-In -->
     <div id="g_id_onload"
-       data-client_id="YOUR_GOOGLE_CLIENT_ID"
-       data-context="signin"
-       data-ux_mode="popup"
-       data-callback="handleGoogleSignIn"
-       data-auto_select="false">
+         data-client_id="YOUR_GOOGLE_CLIENT_ID"
+         data-context="signin"
+         data-ux_mode="popup"
+         data-callback="handleGoogleLogin">
     </div>
 
     <div class="g_id_signin"
-       data-type="standard"
-       data-shape="rectangular"
-       data-theme="outline"
-       data-text="signin_with"
-       data-size="large"
-       data-logo_alignment="left">
+         data-type="standard"
+         data-shape="rectangular"
+         data-theme="outline"
+         data-text="signin_with"
+         data-size="large"
+         data-logo_alignment="left">
     </div>
 
     <p>Don't have an account? <a href="signup.html">Sign Up</a></p>
   </form>
 
   <script>
-    // Utility hash (same as signup)
-    function hash(str) {
-      let h = 0;
-      for (let i = 0; i < str.length; i++) h = (Math.imul(31, h) + str.charCodeAt(i)) | 0;
-      return "h_" + Math.abs(h);
-    }
+    function hash(str){let h=0;for(let i=0;i<str.length;i++)h=(Math.imul(31,h)+str.charCodeAt(i))|0;return"h_"+Math.abs(h);}
+    function getUsers(){return JSON.parse(localStorage.getItem("aroma_users"))||[];}
 
-    function getUsers() {
-      return JSON.parse(localStorage.getItem("aroma_users")) || [];
-    }
-
-    // 👁️ Show/Hide Password Toggle
-    document.getElementById("toggleLoginPassword").addEventListener("click", function() {
-      const pwInput = document.getElementById("loginPassword");
-      const type = pwInput.type === "password" ? "text" : "password";
-      pwInput.type = type;
-      this.textContent = type === "password" ? "👁️" : "🙈";
-    });
-
-    // 🧾 Handle login form
-    document.getElementById("signinForm").addEventListener("submit", (e) => {
+    document.getElementById("signinForm").addEventListener("submit",e=>{
       e.preventDefault();
-
-      const email = document.getElementById("loginEmail").value.trim().toLowerCase();
-      const password = document.getElementById("loginPassword").value;
-      const remember = document.getElementById("rememberMe").checked;
-
-      const users = getUsers();
-      const user = users.find(u => u.email === email && u.passwordHash === hash(password));
-
-      if (!user) {
-        alert("Invalid email or password!");
-        return;
-      }
-
-      localStorage.setItem("aroma_auth", JSON.stringify({ email: user.email, name: user.name }));
-
-      if (remember) {
-        localStorage.setItem("remember_user", user.email);
-      } else {
-        localStorage.removeItem("remember_user");
-      }
-
-      alert("Welcome back, " + user.name + "!");
-      window.location.href = "index.html";
+      const email=document.getElementById("signinEmail").value.trim().toLowerCase();
+      const pw=document.getElementById("signinPassword").value;
+      const users=getUsers();
+      const user=users.find(u=>u.email===email && u.passwordHash===hash(pw));
+      if(!user){alert("Invalid credentials!");return;}
+      localStorage.setItem("aroma_auth",JSON.stringify({name:user.name,email:user.email}));
+      alert("Login successful!");
+      window.location.href="index.html";
     });
 
-    // 🧠 Auto-fill email if 'remember me' was used
-    window.addEventListener("DOMContentLoaded", () => {
-      const savedEmail = localStorage.getItem("remember_user");
-      if (savedEmail) {
-        document.getElementById("loginEmail").value = savedEmail;
-        document.getElementById("rememberMe").checked = true;
-      }
-    });
+    function handleGoogleLogin(response){
+      const data=jwt_decode(response.credential);
+      const user={name:data.name,email:data.email};
+      localStorage.setItem("aroma_auth",JSON.stringify(user));
+      alert("Signed in successfully with Google!");
+      window.location.href="index.html";
+    }
   </script>
-
-  <!-- Google Sign-In -->
   <script src="https://accounts.google.com/gsi/client" async defer></script>
-  <script src="google-auth.js"></script>
+<script src="script.js"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/jwt-decode/build/jwt-decode.min.js"></script>
 </body>
 </html>
