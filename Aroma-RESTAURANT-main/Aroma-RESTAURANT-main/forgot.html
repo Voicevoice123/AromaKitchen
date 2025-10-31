@@ -17,11 +17,9 @@
       background: white;
       padding: 30px;
       border-radius: 10px;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-      width: 300px;
-    }
-    h2 {
-      margin-bottom: 15px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+      width: 320px;
+      text-align: center;
     }
     input {
       display: block;
@@ -39,39 +37,26 @@
       border-radius: 5px;
       cursor: pointer;
       margin-top: 10px;
-      width: 100%;
     }
     a {
       color: teal;
       text-decoration: none;
-    }
-    p {
-      text-align: center;
-      margin-top: 10px;
+      font-size: 14px;
     }
   </style>
 </head>
 <body>
-  <form id="resetForm">
-    <h2>Reset Password</h2>
-    <p>Enter your registered email and new password.</p>
-
-    <input type="email" id="resetEmail" placeholder="Your Email" required>
-    <input type="password" id="newPassword" placeholder="New Password" required>
-    <input type="password" id="confirmNewPassword" placeholder="Confirm Password" required>
-
+  <form id="forgotForm">
+    <h2>Forgot Password?</h2>
+    <p>Enter your email to reset your password</p>
+    <input type="email" id="resetEmail" placeholder="Enter your email" required>
+    <input type="password" id="newPassword" placeholder="Enter new password" required>
+    <input type="password" id="confirmNewPassword" placeholder="Confirm new password" required>
     <button type="submit">Reset Password</button>
-
-    <p>Remembered your password? <a href="signin.html">Log In</a></p>
+    <p><a href="signin.html">Back to Login</a></p>
   </form>
 
   <script>
-    function hash(str) {
-      let h = 0;
-      for (let i = 0; i < str.length; i++) h = (Math.imul(31, h) + str.charCodeAt(i)) | 0;
-      return "h_" + Math.abs(h);
-    }
-
     function getUsers() {
       return JSON.parse(localStorage.getItem("aroma_users")) || [];
     }
@@ -80,14 +65,13 @@
       localStorage.setItem("aroma_users", JSON.stringify(users));
     }
 
-    document.getElementById("resetForm").addEventListener("submit", function(e) {
+    document.getElementById("forgotForm").addEventListener("submit", (e) => {
       e.preventDefault();
-
       const email = document.getElementById("resetEmail").value.trim().toLowerCase();
-      const newPw = document.getElementById("newPassword").value;
-      const confirmPw = document.getElementById("confirmNewPassword").value;
+      const newPassword = document.getElementById("newPassword").value;
+      const confirmNewPassword = document.getElementById("confirmNewPassword").value;
 
-      if (newPw !== confirmPw) {
+      if (newPassword !== confirmNewPassword) {
         alert("Passwords do not match!");
         return;
       }
@@ -96,15 +80,14 @@
       const userIndex = users.findIndex(u => u.email === email);
 
       if (userIndex === -1) {
-        alert("No account found with that email.");
+        alert("No account found with that email!");
         return;
       }
 
-      // Update the user's password hash
-      users[userIndex].passwordHash = hash(newPw);
+      users[userIndex].passwordHash = "h_" + Math.abs(Math.imul(31, 0) + newPassword.charCodeAt(0));
       saveUsers(users);
-
-    window.location.href = "reset-success.html";
+      alert("Password reset successful! You can now log in.");
+      window.location.href = "signin.html";
     });
   </script>
 </body>

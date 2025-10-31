@@ -32,13 +32,13 @@ if (currentPage && currentPage.id === 'order-page' && !auth) {
             window.location.href = "signin.html";
         });
     }
-const welcomeUser = document.getElementById('welcome-user');
-if (auth && welcomeUser) {
-  const username = auth.username || auth.email || "Guest";
-  welcomeUser.textContent = `Welcome, ${username.split('@')[0]}! 👋`;
-} else if (welcomeUser) {
-  welcomeUser.textContent = "";
-}
+// const welcomeUser = document.getElementById('welcome-user');
+// if (auth && welcomeUser) {
+//   const username = auth.username || auth.email || "Guest";
+//   welcomeUser.textContent = `Welcome, ${username.split('@')[0]}! 👋`;
+// } else if (welcomeUser) {
+//   welcomeUser.textContent = "";
+// }
 
     // Initialize cart
     let cart = JSON.parse(localStorage.getItem('cart')) || [];
